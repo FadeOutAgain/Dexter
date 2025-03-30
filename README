@@ -83,6 +83,6 @@ Pour devenir un outil crédible, les aspects suivants seraient à développer :
     La discipline reposant sur des chaînes de confiance, chaque maillon de la chaîne doit pouvoir être authentifié et certifié conforme à l'État de l'Art des technologies mises en oeuvre.
     Les entités "sérieuses" proposant des services certifiés (base de temps, timestamping, stockage de fichiers, ...) monnayent lesdits services.
     Les compétences, les moyens humains et matériels requis pour mettre en place et maintenir ces systèmes certifié ANSSI ou EiDAS induisent inévitablement des coûts pour l'utilisateur.
-    Les services ouverts, gratuits et de qualité ne sont pas légion. FreeTSA.org fait figure d'exception, sans toutefois être reconnu officiellement, et donc avoir une valeur légale.
+    Les services ouverts, gratuits et de qualité ne sont pas légion. FreeTSA.org fait figure d'exception, sans toutefois être reconnu officiellement. Il n'a donc aucune valeur légale.
     J'ai néanmoins pu explorer une partie des mécanismes mis en oeuvre dans la RFC 3161 sur le protocole d'horodatage basé sur des PKI. 
     
