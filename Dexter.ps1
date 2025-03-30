@@ -254,7 +254,7 @@ Lister-ContenuRepertoire -Repertoire "C:\chemin\vers\repertoire"
 function Show-Menu {    
     Write-Host ""
 	Write-Host "================ DEXTER =================" -ForegroundColor DarkRed
-    Write-Host " 1. Simulation avec  hash local          " 
+    Write-Host " 1. Simulation avec hash local          " 
     Write-Host " --------------------------------------- " -ForegroundColor DarkRed
 	Write-Host " 2. Récupération des certificats FreeTSA "
     Write-Host " 3. Requête de timestamping FreeTSA      "
@@ -488,11 +488,14 @@ function Action-7 {
 	Write-Host " État des répertoires " -ForegroundColor White
 	Write-Host "======================" -ForegroundColor Red	
     
-	Write-Host "Cette fonction affiche le contenu des répertoires de travail" -ForegroundColor Yellow
+	Write-Host "Cette fonction affiche le contenu du fichier de réference et des répertoires de travail" -ForegroundColor Yellow
+    Write-Host ""
+    $null=Afficher-Infos-Fichier $FichierDonut
+  
+    Get-Content -Path $FichierDonut | ForEach-Object { Write-Host $_ -ForegroundColor Green }
 
     Lister-ContenuRepertoire -Repertoire $RepReference
     Lister-ContenuRepertoire -Repertoire $RepTSA
-
 }
 
 
