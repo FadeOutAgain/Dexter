@@ -35,7 +35,7 @@ Celles-ci sont déclinées dans un menu à entrées multiples
 4 > Calcule le hash du fichier de référence et le compare au hash certifié par FreeTSA, après s'être assuré que celui-ci était valide
 5 > Altère le fichier de référence en ajoutant une ligne
 6 > Restaure le fichier de référence (sauvegardé au moment de la soumission à FreeTSA)
-7 > Affiche le contenu des répertoires de travail.
+7 > Affiche le contenu du fichier de référence et des répertoires de travail.
 
 Limitations :
 =============
