@@ -1,8 +1,88 @@
-Benjamin MOREAU
-M2 Cybersécurité - Polytech Dijon
-
-# Dispositif
-# EXperimental de
+# Dispositif                Benjamin MOREAU
+# EXperimental de           M2 Cybersécurité - Polytech Dijon
 # Timestamping
 # Electronique
 # Réprouvable
+
+DEXTER est un script Powershell qui permet d'illustrer le principe de fonctionnement du timestamping avec une autorité de chiffrement.
+
+Prérequis :
+===========
+
+* Powershell (Testé avec la version 7.5.0)
+* OpenSSL    (Testé avec la version 1.1.1h du 22 Septembre 2022)
+* Accès à FreeTSA.org   (https://freetsa.org/index_en.php)
+
+Fonctionnalités :
+=================
+
+Celles-ci sont déclinées dans un menu à entrées multiples
+================ DEXTER =================
+ 1. Simulation avec hash local              
+ ---------------------------------------
+ 2. Récupération des certificats FreeTSA
+ 3. Requête de timestamping FreeTSA
+ 4. Vérification du hash du fichier
+ 5. Altération du fichier
+ 6. Restauration du fichier
+ 7. État des répertoires
+ 0. Quitter
+=========================================
+
+1 > Simule les effets de l'Altération d'un fichier sur son hash sans faire appel à une autorité de timestamping
+2 > Récupère les certificats TSA et CA de FreeTSA.org et affiche leur contenu
+3 > Calcule le hash du fichier de référence et le soumet à l'API de FreeTSA.org via un fichier .TSQ, récupere le certificat de timestamping .TSR, et en vérifie la validité
+4 > Calcule le hash du fichier de référence et le compare au hash certifié par FreeTSA, après s'être assuré que celui-ci était valide
+5 > Altère le fichier de référence en ajoutant une ligne
+6 > Restaure le fichier de référence (sauvegardé au moment de la soumission à FreeTSA)
+7 > Affiche le contenu des répertoires de travail.
+
+Limitations :
+=============
+
+* DEXTER ne prend en charge qu'un fichier de référence (Donuts.txt) pour effecter ses opérations (hachages, altérations, soumission, comparaison)
+* DEXTER ne fait pas référence à une base de temps de référence autre que celle de l'autorité de Timestamping. Il ne prend pas en charge les Timezones.
+* DEXTER n'applique pas les nécessaires précautions de lecture seule sur un filesystem à mettre en oeuvre dans le cas de l'analyse forensique.
+* DEXTER ne prend pas en compte les modifications des métadonnées d'un fichiers. Le hash reste le même si on modifie les propriétés du fichier dans le système d'exploitation.
+* DEXTER fonctionnerait néanmoins sur une image de volume dont le hash serait altéré si une métadonnée de fichier ou du système de fichier venait à être modifiée.
+* DEXTER n'inclut pas de journalisation de ses actions
+* DEXTER ne crée pas de bases de données de timestamping pour "raccrocher" un timestamp à un fichier.
+
+Paramétrage :
+=============
+
+* Le script Dexter.PS1 comporte une série de variables autoporteuses modifiables par l'utilisateur avant exécution.
+* Les éléments à configurer impérativement sont
+  * Le répertoire d'installation du script.
+  * Le chemin vers OpenSSL
+
+Perspectives :
+==============
+
+DEXTER n'a été réalisé que pour illustrer le mécanisme de comparaisons de hash. D'abord localement, puis en faisant appel à une Autorité de Timestamping (TSA) libre, freeTSA.org.
+
+Pour devenir un outil crédible, les aspects suivants seraient à développer :
+
+* Utilisation d'une base de temps de référence pour un horodatage des actions locales indépendant de l'heure du système.
+    J'ai essayé d'implémenter des appels à l'API worldtimeapi.org, mais les réponses n'étaient pas consistantes.
+    J'ai essayé d'implémenter des appels au service NTP pool.ntp.org, mais le protocole me paraissait complexe
+    Après réflexion, j'ai finalement jugé l'heure locale suffisante pour l'illustration souhaitée.
+
+* Gestion des fichiers de référence, d'images de volumes ou de répertoires :
+    Le développement de ces fonctionnalités aurait nécessité de nombreuses heures sans apporter de grande nouveauté au mécanisme de timestamping.
+    J'ai choisi de ne pas m'avancer dans cette voie, n'ayant pas l'objectif de développer un utilitaire complet de Timestamping
+
+* Base de données de timestamps et journalisation :
+    Cet aspect aurait été intéressant à développer même dans le cadre d'un "proof of concept". 
+    Un sequestre de logs et de timestamps associés à des fichiers permettrait de clarifier les actions "fonctionnelles" d'horodatage.
+    Il aurait balisé le chemin vers la création d'une main courante électronique.
+
+* Certification du code, et des mécanismes utilisés :
+    En développant soi même du code pour explorer les mécanismes cryptographique du timestamping, j'ai été confronté à la qualité de mon propre code (retour d'un contrôle OK alors qu'il ne l'est pas, ...)
+    J'ai également fait face à la garantie des éléments tiers sur lesquels j'ai cherché à m'appuyer.
+    La discipline reposant sur des chaînes de confiance, chaque maillon de la chaîne doit pouvoir être authentifié et certifié conforme à l'État de l'Art des technologies mises en oeuvre.
+    Les entités "sérieuses" proposant des services certifiés (base de temps, timestamping, stockage de fichiers, ...) monnayent lesdits services.
+    Les compétences, les moyens humains et matériels requis pour mettre en place et maintenir ces systèmes certifié ANSSI ou EiDAS induisent inévitablement des coûts pour l'utilisateur.
+    Les services ouverts, gratuits et de qualité ne sont pas légion. FreeTSA.org fait figure d'exception, sans toutefois être reconnu officiellement, et donc avoir une valeur légale.
+    J'ai néanmoins pu explorer une partie des mécanismes mis en oeuvre dans la RFC 3161 sur le protocole d'horodatage basé sur des PKI. 
+    
